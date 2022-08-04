@@ -12,11 +12,11 @@ function DanhSachNhanVien() {
   this.themNV = function (nv) {
     this.mangNV.push(nv);
   };
-  this.timViTri = function (ma) {
+  this.timViTri = function (tknv) {
     // giả sử viTri chưa tìm thấy nên = -1
     var viTri = -1;
-    // Duyệt mảng và so sánh mã để tìm sinh viên trong mảng
-    this.mangNV.map(function (tknv, index) {
+    // Duyệt mảng và so sánh mã để tìm nhân viên trong mảng
+    this.mangNV.map(function (nv, index) {
       if (nv.taiKhoan === tknv) {
         // tìm thấy
         viTri = index;
@@ -31,6 +31,14 @@ function DanhSachNhanVien() {
     if (viTri > -1) {
       // tìm thấy
       dsnv.mangNV[viTri] = nv;
+    }
+  };
+
+  // Xoá nhân viên
+  this.xoaNV = function (tknv) {
+    var viTri = this.timViTri(tknv);
+    if (viTri > -1) {
+      this.mangNV.splice(viTri, 1);
     }
   };
 }
