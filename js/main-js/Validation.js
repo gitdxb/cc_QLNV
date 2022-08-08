@@ -41,17 +41,11 @@ function Validation() {
     }
   };
   this.checkExistedUser = function (inputVal, spanID, message, mangNV) {
-    /**
-     * Lấy từng phần tử của mangSV, để so sánh inputVal xem có trùng mã SV ko, nếu trùng thì thông báo lỗi, ko thì hợp lệ
-     */
-    // some() (ES6) => có chức năng duyệt mảng (chạy vòng lặp) (funct (item(sv), index){}) => kết quả trả về true/false
-    // giả sử mã chưa tồn tại (isExist = false)
     var isExist = false;
-    isExist = mangNV.some(function (nv, index) {
+    isExist = mangNV.some(function (nv) {
       // return kết quả của biểu thức so sánh
       return nv.taiKhoan === inputVal.replaceAll(" ", ""); // thay thế loại " " sang ""
     });
-    console.log('Tài khoản trạng thái ', isExist);
     if (isExist) {
       // mã bị trùng => dữ liệu không hợp lệ
       document.getElementById(spanID).innerHTML = message;

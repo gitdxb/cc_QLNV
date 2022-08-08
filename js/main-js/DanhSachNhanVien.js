@@ -31,6 +31,7 @@ function DanhSachNhanVien() {
     if (viTri > -1) {
       // tìm thấy
       dsnv.mangNV[viTri] = nv;
+      console.log('dsnv.mangNV[viTri]', dsnv.mangNV[viTri]);
     }
   };
 
@@ -41,4 +42,18 @@ function DanhSachNhanVien() {
       this.mangNV.splice(viTri, 1);
     }
   };
+}
+
+DanhSachNhanVien.prototype.timKiem = function(tuKhoa) {
+  var mangTK = [];
+  var tuKhoaThuong = tuKhoa.toLowerCase();
+  this.mangNV.map(function(nv){
+      var tenNVThuong = nv.tenNV.toLowerCase();
+      var viTriTK = tenNVThuong.indexOf(tuKhoaThuong);
+      if(viTriTK > -1) {
+          // tìm thấy
+          mangTK.push(nv);
+      }
+  });
+  return mangTK;
 }
