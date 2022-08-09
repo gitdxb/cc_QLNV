@@ -24,7 +24,12 @@ getLocalStorage();
 // Clear nội dung khi bấm nut thêm nhân viên
 function clearContent() {
   var formTxt = document.querySelectorAll("#myModal .form-control");
+  var select = document.getElementById('chucvu').selectedIndex;
   for (var i = 0; i < formTxt.length; i++) {
+    // Fix chọn chức vụ không hiển thị "Chọn chức vụ"
+    if(i == 7 && select != 0) {
+      document.getElementById('chucvu').selectedIndex = 0;
+    }
     formTxt[i].value = "";
   }
   getELE("tknv").disabled = false;
@@ -125,7 +130,11 @@ function themNhanVien() {
       Number(gioLam)
     );
 
+    // Tíng tổng lương nhân viên
     nv.tongLuong();
+
+    // Xếp loại giờ làm nhân viên 
+    nv.xepLoaiNV();
 
     // Thêm nv vào mangNV
     dsnv.themNV(nv);
@@ -148,7 +157,7 @@ function hienThiDS(mangNV) {
                 <td>${nv.email}</td>
                 <td>${nv.ngayLam}</td>
                 <td>${nv.chucVu}</td>
-                <td>${nv.luongCB}</td>
+                <td>${nv.luong}</td>
                 <td>${nv.xepLoai}</td>
                 <td>
                     <button class="btn btn-primary p-lg-2" onclick="suaNhanVien('${nv.taiKhoan}')" data-toggle="modal" data-target="#myModal">Sửa</button>
@@ -166,7 +175,6 @@ function suaNhanVien(tknv) {
   if (index > -1) {
     // tim thay
     var nvTim = dsnv.mangNV[index];
-    console.log("nvTim", nvTim);
     getELE("tknv").value = nvTim.taiKhoan;
     getELE("tknv").disabled = true;
     getELE("name").value = nvTim.tenNV;
@@ -239,26 +247,40 @@ function capNhatNhanVien() {
       "tbGiolam",
       "Giờ làm chỉ trong khoảng 80-200 giờ"
     );
+    if (isValidInp) {
+      var nv = new NhanVien(taiKhoan, tenNV, email, password, ngayLam, luongCB, chucVu, gioLam);
 
-  if (isValidInp) {
-    // tạo thể hiện của NV
-    var nv = new NhanVien(
-      taiKhoan,
-      tenNV,
-      email,
-      password,
-      ngayLam,
-      Number(luongCB),
-      chucVu,
-      Number(gioLam)
-    );
+      nv.tongLuong();
+      nv.xepLoaiNV();
 
-    //nv.tongLuong();
-    dsnv.capNhatNV(nv);
-    hienThiDS(dsnv.mangNV);
-    setLocalStorage();
-    document.querySelector('#modal-footer #btnDong').click();
+      dsnv.capNhatNV(nv);
+      hienThiDS(dsnv.mangNV);
+      setLocalStorage();
+      //resetForm();
+      console.log('updated');
   }
+  // if (isValidInp) {
+  //   // tạo thể hiện của NV
+  //   var nv = new NhanVien(
+  //     taiKhoan,
+  //     tenNV,
+  //     email,
+  //     password,
+  //     ngayLam,
+  //     Number(luongCB),
+  //     chucVu,
+  //     Number(gioLam)
+  //   );
+
+  //   // Tính tổng lương
+  //   nv.tongLuong();
+  //   // Xếp loại nv dựa trên số giờ làm
+  //   nv.xepLoaiNV();
+  //   dsnv.capNhatNV(nv);
+  //   hienThiDS(dsnv.mangNV);
+  //   setLocalStorage();
+  //   //document.querySelector('#modal-footer #btnDong').click();
+  // }
 }
 
 // Xoá nhân viên
@@ -269,11 +291,11 @@ function xoaNhanVien(tknv) {
 }
 
 // Tìm kiếm theo xếp loại NV
-function timKiemTheoTen() {
+function timKiemTheoXL() {
   var tuKhoa = getELE("searchName").value;
   var mangTK = dsnv.timKiem(tuKhoa.trim());
   hienThiDS(mangTK);
 }
-getELE("btnTimNV").onclick = timKiemTheoTen;
+getELE("btnTimNV").onclick = timKiemTheoXL;
 
-getELE("searchName").onkeyup = timKiemTheoTen;
+getELE("searchName").onkeyup = timKiemTheoXL;

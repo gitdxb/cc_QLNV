@@ -48,7 +48,7 @@ DanhSachNhanVien.prototype.timKiem = function(tuKhoa) {
   var mangTK = [];
   var tuKhoaThuong = tuKhoa.toLowerCase();
   this.mangNV.map(function(nv){
-      var tenNVThuong = nv.tenNV.toLowerCase();
+      var tenNVThuong = nv.xepLoai.toLowerCase();
       var viTriTK = tenNVThuong.indexOf(tuKhoaThuong);
       if(viTriTK > -1) {
           // tìm thấy

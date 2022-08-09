@@ -12,28 +12,32 @@ function NhanVien(taiKhoan, tenNV, email, password, ngayLam, luongCB, chucVu, gi
     this.chucVu = chucVu;
     this.gioLam = gioLam;
     this.luong = 0;
-    this.xeploai = '';
+    this.xepLoai = '';
 
     
     // phương thức
-    this.tongLuong = function(indexOption, luongCB) {
-        var indexOption = document.getElementById('chucvu').selectedIndex;
-        var luongCB = document.getElementById('luongCB').value;
-        var luong = 0;
-        if (indexOption == 1) {
+    this.tongLuong = function() {
+        if (chucVu == "Sếp") {
             // Sep
-            luong = luongCB * 3;
-        } else if (indexOption == 2) {
+            this.luong = this.luongCB * 3;
+        } else if (chucVu == "Trưởng phòng") {
             // Truong phong
-            luong = luongCB * 2;
-        } else if (indexOption == 3) {
+            this.luong = this.luongCB * 2;
+        } else if (chucVu == "Nhân viên") {
             // Nhan vien
-            luong = luongCB;
+            this.luong = this.luongCB;
         }
-        console.log('luong', luong);
-        return luong;
     }
 
-    this.xeploaiNV = function(){}
-    
+    this.xepLoaiNV = function(){
+        if (Number(this.gioLam) >= 192 ) {
+            this.xepLoai = "Xuất sắc";
+        } else if (176 <= Number(this.gioLam) && Number(this.gioLam) <= 192) {
+            this.xepLoai = "Giỏi";
+        } else if (160 <= Number(this.gioLam) && Number(this.gioLam) <= 176) {
+            this.xepLoai = "Khá";
+        } else {
+            this.xepLoai = "TB";
+        }
+    } 
 }
