@@ -4,6 +4,8 @@
 //GLOBAL
 var dsnv = new DanhSachNhanVien();
 var validate = new Validation();
+// Khi trang vừa chạy, mọi content trong form đã được clear
+clearContent();
 // Hàm rút gọn cú phát getElementByID
 function getELE(id) {
   return document.getElementById(id);
@@ -143,6 +145,7 @@ function themNhanVien() {
     hienThiDS(dsnv.mangNV);
 
     setLocalStorage();
+    clearContent();
   }
 }
 
@@ -160,7 +163,7 @@ function hienThiDS(mangNV) {
                 <td>${nv.luong}</td>
                 <td>${nv.xepLoai}</td>
                 <td>
-                    <button class="btn btn-primary p-lg-2" onclick="suaNhanVien('${nv.taiKhoan}')" data-toggle="modal" data-target="#myModal">Sửa</button>
+                    <button class="btn btn-primary p-lg-2" onclick="suaNhanVien('${nv.taiKhoan}')" data-toggle="modal" data-target="#myModal" id="btnSua">Sửa</button>
                     <button class="btn btn-danger p-lg-2" onclick="xoaNhanVien('${nv.taiKhoan}')">Xóa</button>
                 </td>
             </tr>
@@ -186,6 +189,7 @@ function suaNhanVien(tknv) {
     getELE("gioLam").value = nvTim.gioLam;
   }
 }
+
 function capNhatNhanVien() {
   var taiKhoan = getELE("tknv").value;
   var tenNV = getELE("name").value;
@@ -247,40 +251,29 @@ function capNhatNhanVien() {
       "tbGiolam",
       "Giờ làm chỉ trong khoảng 80-200 giờ"
     );
-    if (isValidInp) {
-      var nv = new NhanVien(taiKhoan, tenNV, email, password, ngayLam, luongCB, chucVu, gioLam);
+  if (isValidInp) {
+    // tạo thể hiện của NV
+    var nv = new NhanVien(
+      taiKhoan,
+      tenNV,
+      email,
+      password,
+      ngayLam,
+      Number(luongCB),
+      chucVu,
+      Number(gioLam)
+    );
 
-      nv.tongLuong();
-      nv.xepLoaiNV();
+    // Tính tổng lương
+    nv.tongLuong();
+    // Xếp loại nv dựa trên số giờ làm
+    nv.xepLoaiNV();
 
-      dsnv.capNhatNV(nv);
-      hienThiDS(dsnv.mangNV);
-      setLocalStorage();
-      //resetForm();
-      console.log('updated');
+    dsnv.capNhatNV(nv);
+    hienThiDS(dsnv.mangNV);
+    setLocalStorage();
+    clearContent();
   }
-  // if (isValidInp) {
-  //   // tạo thể hiện của NV
-  //   var nv = new NhanVien(
-  //     taiKhoan,
-  //     tenNV,
-  //     email,
-  //     password,
-  //     ngayLam,
-  //     Number(luongCB),
-  //     chucVu,
-  //     Number(gioLam)
-  //   );
-
-  //   // Tính tổng lương
-  //   nv.tongLuong();
-  //   // Xếp loại nv dựa trên số giờ làm
-  //   nv.xepLoaiNV();
-  //   dsnv.capNhatNV(nv);
-  //   hienThiDS(dsnv.mangNV);
-  //   setLocalStorage();
-  //   //document.querySelector('#modal-footer #btnDong').click();
-  // }
 }
 
 // Xoá nhân viên
@@ -289,6 +282,7 @@ function xoaNhanVien(tknv) {
   hienThiDS(dsnv.mangNV);
   setLocalStorage(dsnv.mangNV);
 }
+
 
 // Tìm kiếm theo xếp loại NV
 function timKiemTheoXL() {
@@ -299,3 +293,23 @@ function timKiemTheoXL() {
 getELE("btnTimNV").onclick = timKiemTheoXL;
 
 getELE("searchName").onkeyup = timKiemTheoXL;
+
+// Tắt thông báo lỗi
+
+// Khi click nút thêm, các thông báo lỗi biến mất
+var myBtnThem = document.getElementById("btnThem");
+myBtnThem.addEventListener("click", tatTB);
+
+// Khi click nút "Sửa", các thông báo lỗi biến mất
+var myBtnSua = document.getElementById("btnSua");
+myBtnSua.addEventListener("click", tatTB);
+
+
+function tatTB() {
+  var tb = document.querySelectorAll(".sp-thongbao");
+  for (var i = 0; i < tb.length; i++) {
+    if (tb[i].style.display === "block"){
+      tb[i].style.display = "none";
+    }
+  }
+}

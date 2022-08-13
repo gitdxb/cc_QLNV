@@ -26,12 +26,13 @@ function DanhSachNhanVien() {
     // trả kết quả vị trí tìm thấy ra khỏi hàm để sử dụng ở các hàm khác
     return viTri;
   };
+
+
   this.capNhatNV = function (nv) {
-    var viTri = this.timViTri(nv.tknv);
+    var viTri = this.timViTri(nv.taiKhoan);
     if (viTri > -1) {
       // tìm thấy
       dsnv.mangNV[viTri] = nv;
-      console.log('dsnv.mangNV[viTri]', dsnv.mangNV[viTri]);
     }
   };
 
