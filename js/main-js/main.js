@@ -273,6 +273,7 @@ function capNhatNhanVien() {
     hienThiDS(dsnv.mangNV);
     setLocalStorage();
     clearContent();
+    document.querySelector('#modal-footer #btnDong').click();
   }
 }
 
